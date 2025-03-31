@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu');
+
+* {
+    font-family: sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: lightgrey;
+    color: black
+}
+
+main {
+    margin: 8px;
+    font-size: 1.1rem;
+    text-align: center
+}
+
+.navbar {
+    background-color: rgba(7, 0, 75);
+}
+
+.navbar * {
+    color: lightgrey;
+}
+
+.navbar *:hover {
+    color: white;
+}
+
+.nav-link {
+    color: darkgrey !important;
+}
+
+.dropdown-item {
+    color: black !important;
+    cursor: pointer;
+}
+
+.navbar-toggler {
+    background-color: lightgrey;
+}
+
+.square-box {
+    max-width: 400px;
+    min-height: 300px;
+    border: 10px solid black;
+}
+
+h1 {
+    margin: 10px 0;
+}
+
+select {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.item-display-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.login-form {
+    margin: 0 auto;
+}
+
+#form-container form, input {
+    width: 100%;
+}
+
+#form-container form {
+    text-align: left;
+}
+
+#form-container form input {
+    margin-bottom: 10px;
+}
+
+#table-name {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.form-group div {
+    display: none;
+}
+
+.form-group button {
+    width: 100%;
+}
+
+.item {
+    background-color: white;
+    outline: 2px solid black;
+}
+
+#form-success, #form-fail {
+    margin-top: 10px;
+    display: none;
+}
+
+#item-list-display {
+    margin: 0 auto;
+    margin-bottom: 110px;
+    justify-content: center;
+    width: 100%;
+    padding: 1px;
+}
+
+.item img {
+    max-width: 60%;
+    padding-top: 15px;
+}
+
+.item .item-name {
+    padding-top: 20px;
+    font-weight: bold;
+}
+
+.item .item-made-in {
+    padding-bottom: 15px;
+}
+
+.clear-footer {
+    overflow-y: auto;
+}
+
+.shopping-cart-add {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    background-color: rgb(205, 236, 247);
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.add-parent {
+    background-color: lightgrey;
+    padding: 8px;
+}
