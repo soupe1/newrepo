@@ -1,0 +1,60 @@
+<header>
+  <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+          <a class="navbar-brand" routerLink="/" (click)="clearFocus()">OSP eStore</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#expanded-content">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="expanded-content">
+              <ul class="navbar-nav me-auto">
+                  <li class="nav-item">
+                      <a class="nav-link" routerLink="/" (click)="clearFocus()">Home</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" routerLink="/about" (click)="clearFocus()">About Us</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" routerLink="/services" (click)="clearFocus()">Types of Services</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" routerLink="/reviews" (click)="clearFocus()">Reviews</a>
+                  </li>
+              </ul>
+              <hr>
+              <ul class="navbar-nav">
+                  <li class="nav-item">
+                      <a class="nav-link" routerLink="/cart" (click)="clearFocus()">Shopping Cart</a>
+                  </li>
+				  @if (loggedIn) {
+					@if (loggedAdmin) {
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">DB Maintain</a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" routerLink="/db-maintain-insert">Insert</a></li>
+								<li><a class="dropdown-item" routerLink="/db-maintain-delete">Delete</a></li>
+								<li><a class="dropdown-item" routerLink="/db-maintain-select">Select</a></li>
+								<li><a class="dropdown-item" routerLink="/db-maintain-update">Update</a></li>
+							</ul>
+						</li>
+					}
+					<li class='nav-item dropdown'>
+						<a class='nav-link dropdown-toggle' role='button' data-bs-toggle='dropdown'>{{loggedName}}</a>
+						<ul class='dropdown-menu dropdown-menu-end'>
+							<li><a class='dropdown-item' id='signout' (click)="logout()">Sign Out</a></li>
+						</ul>
+					</li>
+				  } @else {
+					<li class='nav-item dropdown'>
+						<a class='nav-link dropdown-toggle' role='button' data-bs-toggle='dropdown'>Sign In/Up</a>
+						<ul class='dropdown-menu dropdown-menu-end'>
+							<li><a class='dropdown-item' routerLink="/signin">Sign In</a></li>
+							<li><a class='dropdown-item' routerLink="/signup">Sign Up</a></li>
+						</ul>
+					</li>
+				  }
+              </ul>
+          </div>
+      </div>
+  </nav>
+</header>
+<router-outlet></router-outlet>

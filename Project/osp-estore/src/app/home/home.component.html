@@ -1,0 +1,46 @@
+<main>
+    <h1 id="dept-header">Electronics</h1>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-2 col-md-4 offset-lg-5 offset-md-4">
+                <select class="form-select" id="dept-select" [(ngModel)]="department_select" (ngModelChange)="updateItemList()">
+                    <option value="furniture">Furniture</option>
+                    <option value="kitchen">Kitchen</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="appliances">Appliances</option>
+                    <option value="beauty">Beauty</option>
+                    <option value="clothes">Clothes</option>
+                    <option value="shoes">Shoes</option>
+                    <option value="food">Food</option>
+                    <option value="art">Art</option>
+                    <option value="decorations">Decorations</option>
+                </select>
+            </div>
+        </div>
+        <div class="row" id="display-parent">
+            @if (items.length != 0) {
+                <div class='row' id='item-list-display'>
+                @for (item of items; track item.id) {
+                    <div draggable='true' class='col-lg-4 col-md-6 item' attr.data-value={{item.id}} (dragstart)="drag($event)">
+                        <img draggable='false' src={{item.image}}>
+                        <div class='item-name'>{{item.name}}</div>
+                        <div class='item-price'>${{item.price}}</div>
+                        <div class='item-made-in'>Made In: {{item.made_in}}</div>
+                    </div>
+                }
+                </div>
+                <div class='add-parent fixed-bottom'>
+                    <div class='shopping-cart-add' id='cart-drop-zone' (dragover)="allowDrop($event)" (drop)="drop($event)">
+                        @if (item_dropped) {
+                            <b>Item Added to Cart!</b>
+                        } @else {
+                            Drag Items Here to Add to Cart!
+                        }
+                    </div>
+                </div>
+            } @else {
+                <div class='col-lg-4 col-md-6 offset-lg-4 offset-md-3'>No Items Available</div>
+            }
+        </div>
+    </div>
+</main>
