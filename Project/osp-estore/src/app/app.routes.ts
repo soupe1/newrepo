@@ -5,6 +5,8 @@ import { ServicesComponent } from './services/services.component';
 import { CartComponent } from './cart/cart.component';
 import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
+import { CheckoutComponent } from './checkout/checkout.component';
+import { OrderConfirmationComponent } from './order-confirmation/order-confirmation.component';
 
 export const routes: Routes = [
     {
@@ -41,5 +43,15 @@ export const routes: Routes = [
         path: 'signup',
         title: 'Sign Up - OSP Electronics',
         component: SignupComponent
+    },
+    {
+        path: 'checkout',
+        title: 'Checkout - OSP Electronics',
+        component: CheckoutComponent
+    },
+    {
+        path: 'order-confirmation',
+        title: 'Order Confirmation - OSP Electronics',
+        component: OrderConfirmationComponent
     },
 ];
