@@ -1,0 +1,108 @@
+<main>
+    <div class="confirmation-container">
+        @if (orderInfo) {
+            <div class="success-message">
+                <h1>Order Confirmed!</h1>
+                <p>Thank you for your order! Your order has been placed successfully.</p>
+            </div>
+            
+            <div class="invoice">
+                <h2>Order #{{ orderId }}</h2>
+                <p><strong>Date:</strong> {{ orderInfo.order_date | date:'medium' }}</p>
+                <p><strong>Customer:</strong> {{ orderInfo.customer_name }}</p>
+                
+                <h3>Order Items</h3>
+                <div class="invoice-items">
+                    @for (item of orderInfo.items; track item.item_id) {
+                        <div class="invoice-item">
+                            <div class="invoice-item-details">
+                                <span>{{ item.item_name }} {{ item.quantity > 1 ? 'x' + item.quantity : '' }}</span>
+                                <span>${{ (item.price * item.quantity).toFixed(2) }}</span>
+                            </div>
+                            @if (!item.reviewed) {
+                                <button class="review-button" (click)="openReviewModal(item.item_id)">Leave Review</button>
+                            } @else {
+                                <span class="reviewed-badge">Reviewed</span>
+                            }
+                        </div>
+                    }
+                </div>
+                
+                <div class="invoice-summary">
+                    <div class="invoice-item"><strong>Subtotal:</strong> ${{ orderInfo.subtotal.toFixed(2) }}</div>
+                    <div class="invoice-item"><strong>Shipping:</strong> ${{ orderInfo.shipping.toFixed(2) }}</div>
+                    @if (orderInfo.deliveryType === 'express') {
+                        <div class="invoice-item"><strong>Express Delivery Fee:</strong> Included</div>
+                    }
+                    <div class="invoice-item" style="font-weight: bold;"><strong>Total:</strong> ${{ orderInfo.total_price.toFixed(2) }}</div>
+                </div>
+                
+                <h3>Delivery Details</h3>
+                <p><strong>Delivery From:</strong> {{ orderInfo.warehouse }} ({{ orderInfo.warehouse_address }})</p>
+                <p><strong>Delivery To:</strong> {{ orderInfo.customer_address }}</p>
+                <p><strong>Estimated Delivery Date:</strong> {{ orderInfo.delivery_date | date:'mediumDate' }}</p>
+                @if (orderInfo.deliveryType === 'express') {
+                    <p class="express-badge">Express Delivery</p>
+                }
+            </div>
+
+            <div class="delivery-summary">
+                <h3>Delivery Information</h3>
+                <p>Your order will be delivered from {{ orderInfo.warehouse }} to your address.</p>
+                <p>The delivery vehicle will follow the most optimal route for quick and efficient delivery.</p>
+            </div>
+
+            <div class="delivery-message">
+                <p>Your order will be delivered by Truck #{{ orderInfo.truck_id }}.</p>
+                <p>Thank you for shopping with OSP eStore!</p>
+                <a routerLink="/" class="btn">Continue Shopping</a>
+            </div>
+            
+            <!-- Review Modal -->
+            @if (selectedItemId !== null) {
+                <div class="review-modal">
+                    <div class="review-modal-content">
+                        <h2>Leave a Review</h2>
+                        @if (reviewSubmitted) {
+                            <div class="review-success">
+                                <p>Thank you for your review!</p>
+                                <button class="btn" (click)="selectedItemId = null">Close</button>
+                            </div>
+                        } @else {
+                            <form [formGroup]="reviewForm" (ngSubmit)="submitReview()">
+                                <div class="form-group">
+                                    <label for="rating">Rating:</label>
+                                    <select id="rating" formControlName="rating" class="form-control">
+                                        <option value="5">5 - Excellent</option>
+                                        <option value="4">4 - Very Good</option>
+                                        <option value="3">3 - Good</option>
+                                        <option value="2">2 - Fair</option>
+                                        <option value="1">1 - Poor</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="review">Review:</label>
+                                    <textarea id="review" formControlName="review" class="form-control" placeholder="Write a brief review (100 characters max)"></textarea>
+                                    <small class="chars-remaining">{{ 100 - (reviewForm.get('review')?.value?.length || 0) }} characters remaining</small>
+                                    @if (reviewForm.get('review')?.invalid && reviewForm.get('review')?.touched) {
+                                        <div class="error-message">Review is required and cannot exceed 100 characters</div>
+                                    }
+                                </div>
+                                
+                                <div class="form-buttons">
+                                    <button type="button" class="btn btn-secondary" (click)="selectedItemId = null">Cancel</button>
+                                    <button type="submit" class="btn btn-primary" [disabled]="!reviewForm.valid">Submit Review</button>
+                                </div>
+                            </form>
+                        }
+                    </div>
+                </div>
+            }
+        } @else {
+            <div class="loading">
+                <p>Loading order information...</p>
+            </div>
+        }
+    </div>
+</main>

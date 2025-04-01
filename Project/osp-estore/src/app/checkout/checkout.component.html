@@ -1,0 +1,168 @@
+<main>
+    <h1>Checkout</h1>
+    
+    <div class="checkout-container">
+        <div class="order-summary">
+            <h2>Order Summary</h2>
+            <div id="cart-items">
+                @if (cart.length === 0) {
+                    <p>Your cart is empty. <a routerLink="/cart">Return to cart</a></p>
+                } @else {
+                    @for (item of cart; track item.item_id) {
+                        <div class="cart-item">
+                            <div class="summary-row">
+                                <span>{{ item.item_name }} x {{ item.quantity }}</span>
+                                <span>${{ (item.price * item.quantity).toFixed(2) }}</span>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            
+            <div id="order-totals">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span>${{ subtotal.toFixed(2) }}</span>
+                </div>
+                <div class="summary-row">
+                    <span>Shipping:</span>
+                    <span>${{ shipping.toFixed(2) }}</span>
+                </div>
+                <div class="total-row">
+                    <span>Total:</span>
+                    <span>${{ total.toFixed(2) }}</span>
+                </div>
+            </div>
+            
+            <div class="map-container" style="margin-top: 20px;">
+                <h3>Delivery Route Map</h3>
+                <div id="map-frame-container">
+                    <!-- Map will be loaded here -->
+                    <div class="map-placeholder">
+                        Please select a warehouse and enter your address to see the delivery route.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="checkout-form">
+            <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+                <div class="form-section">
+                    <h2>Select Warehouse Location</h2>
+                    <div class="form-group">
+                        <label for="warehouse">Warehouse:</label>
+                        <select id="warehouse" formControlName="warehouse" class="form-control">
+                            <option value="1">Downtown Warehouse</option>
+                            <option value="2">South Branch</option>
+                            <option value="3">North Branch</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="timeSlot">Delivery Time Slot:</label>
+                        <select id="timeSlot" formControlName="timeSlot" class="form-control">
+                            <option value="morning">9:00 AM - 12:00 PM</option>
+                            <option value="afternoon">1:00 PM - 5:00 PM</option>
+                            <option value="evening">6:00 PM - 9:00 PM</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="deliveryType">Delivery Type:</label>
+                        <select id="deliveryType" formControlName="deliveryType" class="form-control">
+                            <option value="regular">Regular Delivery ($15)</option>
+                            <option value="express">Express Delivery ($25)</option>
+                        </select>
+                        <small class="delivery-note">
+                            Express delivery is available within 1-3 days. Regular delivery takes 4+ days.
+                        </small>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h2>Delivery Details</h2>
+                    <div class="form-group">
+                        <label for="address">Address:</label>
+                        <input type="text" id="address" formControlName="address" class="form-control">
+                        @if (checkoutForm.get('address')?.invalid && checkoutForm.get('address')?.touched) {
+                            <div class="error-message">Address is required</div>
+                        }
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="city">City:</label>
+                        <input type="text" id="city" formControlName="city" class="form-control">
+                        @if (checkoutForm.get('city')?.invalid && checkoutForm.get('city')?.touched) {
+                            <div class="error-message">City is required</div>
+                        }
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="deliveryDate">Delivery Date:</label>
+                        <input type="date" id="deliveryDate" formControlName="deliveryDate" class="form-control">
+                        @if (checkoutForm.get('deliveryDate')?.invalid && checkoutForm.get('deliveryDate')?.touched) {
+                            <div class="error-message">Please select a valid delivery date</div>
+                        }
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h2>Payment Information</h2>
+                    <div class="form-group">
+                        <label for="paymentMethod">Payment Method:</label>
+                        <select id="paymentMethod" formControlName="paymentMethod" class="form-control">
+                            <option value="credit">Credit Card</option>
+                            <option value="debit">Debit Card</option>
+                            <option value="gift">Gift Card</option>
+                        </select>
+                    </div>
+                    
+                    @if (selectedPaymentMethod === 'credit' || selectedPaymentMethod === 'debit') {
+                        <div class="card-payment-section">
+                            <div class="form-group">
+                                <label for="cardNumber">Card Number:</label>
+                                <input type="text" id="cardNumber" formControlName="cardNumber" class="form-control" placeholder="Enter 16-digit card number">
+                                @if (checkoutForm.get('cardNumber')?.invalid && checkoutForm.get('cardNumber')?.touched) {
+                                    <div class="error-message">Please enter a valid 16-digit card number</div>
+                                }
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="cardExpiry">Expiry Date:</label>
+                                <input type="month" id="cardExpiry" formControlName="cardExpiry" class="form-control">
+                                @if (checkoutForm.get('cardExpiry')?.invalid && checkoutForm.get('cardExpiry')?.touched) {
+                                    <div class="error-message">Please enter a valid expiry date</div>
+                                }
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="cardCvv">CVV:</label>
+                                <input type="text" id="cardCvv" formControlName="cardCvv" class="form-control" placeholder="3 or 4 digits">
+                                @if (checkoutForm.get('cardCvv')?.invalid && checkoutForm.get('cardCvv')?.touched) {
+                                    <div class="error-message">Please enter a valid CVV (3 or 4 digits)</div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    
+                    @if (selectedPaymentMethod === 'gift') {
+                        <div class="gift-card-section">
+                            <div class="form-group">
+                                <label for="giftCardNumber">Gift Card Number:</label>
+                                <input type="text" id="giftCardNumber" formControlName="giftCardNumber" class="form-control" placeholder="Enter 16-digit gift card number">
+                                @if (checkoutForm.get('giftCardNumber')?.invalid && checkoutForm.get('giftCardNumber')?.touched) {
+                                    <div class="error-message">Please enter a valid 16-digit gift card number</div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+                
+                <div class="form-buttons">
+                    <a routerLink="/cart" class="btn btn-secondary">Back to Cart</a>
+                    <button type="submit" id="confirm-payment" class="btn btn-primary" [disabled]="!checkoutForm.valid">Confirm Payment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
